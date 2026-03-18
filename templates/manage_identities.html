@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Identities</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/create-identity">Create Identity</a>
+            <a href="/verify-identity">Verify Identity</a>
+            <a href="/identities">Manage Identities</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+    <main class="container">
+        <h1 class="mt-5">Manage Identities</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>DID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="identitiesTableBody">
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        <p>&copy; 2023 Web3 Decentralized Identity Verifier</p>
+    </footer>
+    <script src="/static/js/main.js"></script>
+    <script>
+        fetch('/api/identities')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('identitiesTableBody');
+            data.forEach(identity => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${identity.id}</td><td>${identity.did}</td><td>${identity.name}</td><td>${identity.email}</td>`;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

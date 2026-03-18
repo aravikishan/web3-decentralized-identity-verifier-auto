@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Identity</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/create-identity">Create Identity</a>
+            <a href="/verify-identity">Verify Identity</a>
+            <a href="/identities">Manage Identities</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+    <main class="container">
+        <h1 class="mt-5">Create a New Identity</h1>
+        <form id="createIdentityForm" novalidate>
+            <div class="mb-3">
+                <label for="did" class="form-label">Decentralized Identifier (DID)</label>
+                <input type="text" class="form-control" id="did" required>
+                <div class="invalid-feedback">Please provide a valid DID.</div>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" required>
+                <div class="invalid-feedback">Please provide a name.</div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+                <div class="invalid-feedback">Please provide a valid email.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Identity</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2023 Web3 Decentralized Identity Verifier</p>
+    </footer>
+    <script src="/static/js/main.js"></script>
+    <script>
+        document.getElementById('createIdentityForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const did = document.getElementById('did').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            fetch('/api/identities', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ did, name, email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Identity created with ID: ' + data.id);
+                window.location.href = '/identities';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

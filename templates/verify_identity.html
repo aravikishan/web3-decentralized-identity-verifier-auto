@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Identity</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/create-identity">Create Identity</a>
+            <a href="/verify-identity">Verify Identity</a>
+            <a href="/identities">Manage Identities</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+    <main class="container">
+        <h1 class="mt-5">Verify Identity</h1>
+        <form id="verifyIdentityForm" novalidate>
+            <div class="mb-3">
+                <label for="identityId" class="form-label">Identity ID</label>
+                <input type="number" class="form-control" id="identityId" required>
+                <div class="invalid-feedback">Please provide a valid Identity ID.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2023 Web3 Decentralized Identity Verifier</p>
+    </footer>
+    <script src="/static/js/main.js"></script>
+    <script>
+        document.getElementById('verifyIdentityForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const identityId = document.getElementById('identityId').value;
+            fetch('/api/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ identity_id: identityId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Verification result: ' + (data.verified ? 'Verified' : 'Not Verified'));
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
